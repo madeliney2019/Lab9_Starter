@@ -6,47 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Lab 9</title>
-
-  <style>
-    button {
-      margin: 3px;
-    }
-
-    button:hover {
-      cursor: pointer;
-    }
-
-    #first-num,
-    #second-num {
-      width: 60px;
-    }
-
-    output {
-      border: 1px solid gray;
-      display: block;
-      height: 18px;
-      margin-top: 5px;
-      padding: 5px;
-      width: 240px;
-    }
-
-    main {
-      width: 800px;
-    }
-
-    #error-btns {
-      column-gap: 5px;
-      display: flex;
-      flex-wrap: wrap;
-      margin-top: 30px;
-      row-gap: 5px;
-    }
-
-    #error-btns>* {
-      padding: 8px 2px;
-      width: 122px;
-    }
-  </style>
+  <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
@@ -88,6 +48,15 @@
   </main>
 
   <script>
+    // Step 4:
+    class DivideByZeroError extends Error {
+      constructor(message) {
+      super(message);
+      this.name = "DivideByZeroError"; 
+      this.message = "You can't divide by zero!";
+      }
+    }
+
     let form = document.querySelector('form');
     form.addEventListener('submit', e => {
       e.preventDefault();
@@ -95,14 +64,123 @@
       let firstNum = document.querySelector('#first-num').value;
       let secondNum = document.querySelector('#second-num').value;
       let operator = document.querySelector('#operator').value;
-      output.innerHTML = eval(`${firstNum} ${operator} ${secondNum}`);
+
+      // Step 3:
+      try {
+        if (operator == "/" && secondNum == "0"){
+          // Step 4:
+          throw new DivideByZeroError;
+        }
+        output.innerHTML = eval(`${firstNum} ${operator} ${secondNum}`);
+      } catch (err) {
+        alert(err.message);
+      } finally {
+        document.querySelector('#calculate').innerText = "Calculate More";
+      }
     });
 
     let errorBtns = Array.from(document.querySelectorAll('#error-btns > button'));
 
-    // Start your code here
-    // You may move this JS to another file if you wish
+    // Step 2:
+
+    errorBtns[0].addEventListener("click", () => {
+        console.log('console log button pressed');
+    });
+
+    errorBtns[1].addEventListener("click", () => {
+        console.error('console error button pressed');
+    });
+
+    errorBtns[2].addEventListener("click", () => {
+        console.count('counter');
+    });
+
+    errorBtns[3].addEventListener("click", () => {
+        console.warn('console warn button pressed');
+    });
+
+    errorBtns[4].addEventListener("click", () => {
+        let expression = false;
+        console.assert(expression, 'console assert button pressed');
+    });
+
+    errorBtns[5].addEventListener("click", () => {
+        console.clear();
+    });
+
+    errorBtns[6].addEventListener("click", () => {
+        console.dir(document.body);
+    });
+
+    errorBtns[7].addEventListener("click", () => {
+        console.dirxml(document);
+    });
+
+    errorBtns[8].addEventListener("click", () => {
+        console.group('console grouping');
+    });
+
+    errorBtns[9].addEventListener("click", () => {
+        console.groupEnd('console grouping');
+    });
+
+    errorBtns[10].addEventListener("click", () => {
+        console.table([
+            {
+              name: 'Maddie',
+              class: 'CSE 110',
+              grade: 'A+',
+            },
+            {
+              name: 'Lily',
+              class: 'P Chem',
+              grade: 'A',
+            },
+            {
+              name: 'Liliana',
+              class: 'Biochem',
+            }
+        ]);  
+    });
+
+    errorBtns[11].addEventListener("click", () => {
+        console.time('timer');
+    });
+
+    errorBtns[12].addEventListener("click", () => {
+        console.timeEnd('timer');
+    });
+
+    errorBtns[13].addEventListener("click", () => {
+        const one = () => { two(); };
+        const two = () => { three(); };
+        const three = () => { four(); };
+        const four = () => { console.trace(); };
+        one();
+    });
+
+    errorBtns[14].addEventListener("click", () => {
+        const globalError = 5;
+        globalError = 20;
+    });
+
+    // Step 5:
+    window.onerror = function(message, source, lineno, colno, error) {
+      console.log('window.onerror triggered');
+      console.log(message);
+    }
+
   </script>
+
+  <!-- Step 5: -->
+  <script src="https://cdn.trackjs.com/agent/v3/latest/t.js"></script>
+  <script>
+    window.TrackJS && TrackJS.install({ 
+      token: "0f5834877dc4456e924d0b1f0a8b494c"
+      // for more configuration options, see https://docs.trackjs.com
+    });
+  </script>                
+
 </body>
 
 </html>
